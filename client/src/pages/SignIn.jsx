@@ -1,19 +1,26 @@
 // @ts-nocheck
 import { useState } from 'react'
-import {Link, useNavigate} from 'react-router-dom'
-
+import {Link, useNavigate} from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInStart, signInSuccess,signInFailure } from '../redux/user/userSlice';
 
 export default function SignIn() {
 
   //handleChange event 
   const [formData, setFormData] = useState({});
-  //error from
-  const [error,setError] = useState(null);
-  //lodding form icon
-  const [loading, setLoading] = useState(false);
+  // these also replace
+
+  // //error from
+  // const [error,setError] = useState(null);
+  // //lodding form icon
+  // const [loading, setLoading] = useState(false);
+
+  const{loading,error} = useSelector((state) => state.user);
 
   //when siign up got to sign in page
   const navigate = useNavigate();
+  // redux 
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({
@@ -27,7 +34,11 @@ export default function SignIn() {
   const handleSubmit = async(e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      //redux toolkit
+      //setLoading(true); replace
+
+      dispatch(signInStart());
+
       const res = await fetch('/api/auth/signin', {
         method: 'POST',
         headers: {
@@ -37,18 +48,27 @@ export default function SignIn() {
       }); 
       const data = await res.json();
       if(data.success === false){
-        setLoading(false);
-        setError(data.message);
+        // replace two line with redux dispath
+
+        // setLoading(false);
+        // setError(data.message);
        
+        dispatch(signInFailure(data.message));
         return;
       } 
-      setLoading(false);
-      setError(null);
+      // REPLACE ALSO THESE LINES 
+
+      // setLoading(false);
+      // setError(null);
+      dispatch(signInSuccess(data));
       navigate('/');
        
     } catch (error) {
-      setLoading(false);
-      setError(error.message);
+      // replace also
+
+      // setLoading(false);
+      // setError(error.message);
+      dispatch(signInFailure(error.message));
     }
 
   };
