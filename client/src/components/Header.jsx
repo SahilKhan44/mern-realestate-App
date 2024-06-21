@@ -1,8 +1,12 @@
+// @ts-nocheck
 import { useState, useEffect } from 'react';
 import { FaSearch, FaSun, FaMoon } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 export default function Header() {
+  // this is for light moide or dark mode
+
   const [isLightMode, setIsLightMode] = useState(true);
 
   useEffect(() => {
@@ -18,6 +22,12 @@ export default function Header() {
   const toggleTheme = () => {
     setIsLightMode(prevMode => !prevMode);
   };
+
+  // This is for login auth when user login and their profile
+
+
+  const {currentUser} = useSelector(state => state.user) 
+  console.log("Current User in Header:", currentUser); // Add this line
 
   return (
     <header className={`${isLightMode ? 'bg-slate-200' : 'bg-blue-200'} shadow-md`}>
@@ -39,8 +49,14 @@ export default function Header() {
           <Link to="/about">
             <li className="hidden sm:inline text-slate-700 hover:underline">About</li>
           </Link>
-          <Link to="/sign-in">
-            <li className="hidden sm:inline text-slate-700 hover:underline">Sign in</li>
+          
+          <Link to="/profile">
+          {currentUser ? (   
+          <img className='rounded-full h-7 w-7 object-cover' src={currentUser.avatar} alt="profile" />
+          ): (
+          <li className="hidden sm:inline text-slate-700 hover:underline">Sign in</li>
+
+          )}
           </Link>
           <li>
             <button onClick={toggleTheme} className="text-slate-700 hover:underline flex items-center">

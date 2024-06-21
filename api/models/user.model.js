@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
      },
      avatar: {
       type: String,
-      default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSF0GYowjte69qqJxstffc9VbjXFRBXW6tPWFxflPORoSEnXFvo1pXplE3MtBbN-oinYV0&usqp=CAU"
+      default: "https://robohash.org/set_set4/Amy?size=25x25" 
      },
 }, { timestamps: true});
 
